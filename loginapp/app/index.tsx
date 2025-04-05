@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 
 
 // Import the functions you need from the SDKs you need
@@ -23,7 +23,8 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 const db = getFirestore(app);
 const testGangCollection = collection(db, 'test-gang');
 
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword} from "firebase/auth";
+import { useState } from "react";
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
@@ -31,6 +32,8 @@ provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 
 
 export default function Index() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   function doSomething() {
     getDocs(testGangCollection).then(r=> {
@@ -50,18 +53,62 @@ export default function Index() {
       console.warn("error", e);
     })
   }
+  function handleSignUp() {
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential
+      // Alert.alert("Acount has been successfully created ☺️");
+      console.log("signed up")
+    })
+    .catch((error) => {
+      // Alert.alert("Signup Error", error.message);
+      console.log("signed up got messed up", error.message)
+    })
+  }
   return (
     <View
-      style={{
-        backgroundColor: "grey",
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+      style={style.container}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-      <button onClick={doSomething}>BTN type shh</button>
-      <button onClick={signIn}>Sign In</button>
+      <Text style={style.title}>SIGN UP</Text>
+      <TextInput 
+      style={style.input}
+      placeholder="email"
+      value={email}
+      onChangeText={setEmail}
+      />
+       <TextInput 
+      style={style.input}
+      placeholder="password"
+      value={password}
+      onChangeText={setPassword}
+      />
+      <Button title="Sign up ✅" onPress={handleSignUp}/>
+     {/* <button onClick={doSomething}>BTN type shh</button> */}
+      <Button title="Sign In with Google" onPress={signIn}/>
     </View>
   );
 }
+
+const style = StyleSheet.create({
+  container: {
+    backgroundColor: "grey",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  input: {
+    height: 50,
+    borderColor: '#aaa',
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    marginBottom: 15,
+    borderRadius: 8,
+    backgroundColor: 'white',
+  },
+  title: {
+    color: "#fff",
+    fontSize: 24,
+    marginBottom: 20,
+    alignSelf: 'center',
+  }
+})
