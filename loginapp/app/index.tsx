@@ -1,4 +1,6 @@
 import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Link } from "expo-router";
+
 
 
 // Import the functions you need from the SDKs you need
@@ -84,7 +86,12 @@ export default function Index() {
       />
       <Button title="Sign up ✅" onPress={handleSignUp}/>
      {/* <button onClick={doSomething}>BTN type shh</button> */}
-      <Button title="Sign In with Google" onPress={signIn}/>
+      <Button title="Sign In with Google" onPress={signIn} />
+
+
+      <Link href={"/about"}>
+          Go to About Page
+      </Link>
     </View>
   );
 }
