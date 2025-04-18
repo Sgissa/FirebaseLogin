@@ -1,7 +1,6 @@
-import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { Link } from "expo-router";
-
-
+import { Text, View, StyleSheet, TextInput, Image, Button, TouchableOpacity } from "react-native";
+import { FontAwesome } from '@expo/vector-icons';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -33,87 +32,41 @@ const provider = new GoogleAuthProvider();
 provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 
 
-export default function Index() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  function doSomething() {
-    getDocs(testGangCollection).then(r=> {
-      console.log(r.docs.length);
-      for(let i = 0; i < r.docs.length; i++) {
-        const currentDoc = r.docs[i];
-        console.log(currentDoc.id, currentDoc.data());
-      }
-    }).catch (e=> {
-      console.warn("error", e);
-    })
-  }
+export default function Welcome() {
+
   function signIn() {
-    signInWithPopup(auth, provider).then(r=> {
-      console.log(r.user);
-    }).catch (e=> {
-      console.warn("error", e);
-    })
-  }
-  function handleSignUp() {
-    createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential
-      // Alert.alert("Acount has been successfully created ☺️");
-      console.log("signed up")
-    })
-    .catch((error) => {
-      // Alert.alert("Signup Error", error.message);
-      console.log("signed up got messed up", error.message)
-    })
-  }
-  function handleSignIn() {
-    signInWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    // Signed in 
-    // const user = userCredential.user;
-    console.log("signed in")
-    // ...
-  })
-  .catch((error) => {
-    // const errorCode = error.code;
-    // const errorMessage = error.message;
-    console.log("signed in got messed up", error.message)
-  });
-  }
-  return (
-    <View
-      style={style.container}
-    >
-      <Text style={style.title}>SIGN UP</Text>
-      <TextInput 
-      style={style.input}
-      placeholder="email"
-      value={email}
-      onChangeText={setEmail}
-      />
-       <TextInput 
-      style={style.input}
-      placeholder="password"
-      value={password}
-      onChangeText={setPassword}
-      />
-      <Button title="Sign up" onPress={handleSignUp}/>
-      <Button title="Sign in" onPress={handleSignIn}/>
-     {/* <button onClick={doSomething}>BTN type shh</button> */}
-      <Button title="Sign In with Google" onPress={signIn} />
+      signInWithPopup(auth, provider).then(r=> {
+        console.log(r.user);
+      }).catch (e=> {
+        console.warn("error", e);
+      })
+    }
+    return(
+        <View style={style.container}>
+          <Image source={require('../assets/images/rocktitle.png')}/>
+          <p style={style.ptext}>Have an existing account?</p>
+          <Link href={'/signin'}>
+          <Button title="Login" color="#FF086D"/>
+          </Link>
+          
+          <p style={style.ptext}>New to Rock AR?</p>
+          <Link href={'/signup'}>
+          <Button title="Sign Up" color="#636AB1" />
+          </Link>
 
-
-      <Link href={"/about"}>
-          Go to About Page
-      </Link>
-    </View>
-  );
+          <TouchableOpacity style={style.gbutton} onPress={signIn}>
+            <FontAwesome name="google" size={24} color="white" style={style.icon} />
+            <Text style={style.text}>Sign in with Google</Text>
+          </TouchableOpacity>
+        </View>
+    )
 }
+
 
 const style = StyleSheet.create({
   container: {
-    backgroundColor: "grey",
+    backgroundColor: "#281543",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -132,5 +85,34 @@ const style = StyleSheet.create({
     fontSize: 24,
     marginBottom: 20,
     alignSelf: 'center',
-  }
+  },
+  ptext: {
+    color: "#fff",
+    fontSize: 24,
+    marginBottom: 20,
+    alignSelf: 'center',
+  },
+  button: { 
+    fontSize: 20,
+    textDecorationLine: "underline",
+    color: "#fff",
+  },
+  gbutton: {
+    flexDirection: 'row',
+    backgroundColor: '#636AB1',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  icon: {
+    marginRight: 10,
+  },
+  text: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
 })
