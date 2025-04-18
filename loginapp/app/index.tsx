@@ -25,7 +25,7 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 const db = getFirestore(app);
 const testGangCollection = collection(db, 'test-gang');
 
-import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword} from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 import { useState } from "react";
 
 const auth = getAuth(app);
@@ -67,6 +67,20 @@ export default function Index() {
       console.log("signed up got messed up", error.message)
     })
   }
+  function handleSignIn() {
+    signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    // const user = userCredential.user;
+    console.log("signed in")
+    // ...
+  })
+  .catch((error) => {
+    // const errorCode = error.code;
+    // const errorMessage = error.message;
+    console.log("signed in got messed up", error.message)
+  });
+  }
   return (
     <View
       style={style.container}
@@ -84,7 +98,8 @@ export default function Index() {
       value={password}
       onChangeText={setPassword}
       />
-      <Button title="Sign up ✅" onPress={handleSignUp}/>
+      <Button title="Sign up" onPress={handleSignUp}/>
+      <Button title="Sign in" onPress={handleSignIn}/>
      {/* <button onClick={doSomething}>BTN type shh</button> */}
       <Button title="Sign In with Google" onPress={signIn} />
 
