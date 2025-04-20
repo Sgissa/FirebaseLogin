@@ -71,6 +71,9 @@ export default function Index() {
       <Link style={style.link} href={'/signin'}>
       <Button title="Back To Login"/>
       </Link>
+      <Link style={style.link} href={'/'}>
+      <Button title="Back To Home"/>
+      </Link>
       
     </View>
   );

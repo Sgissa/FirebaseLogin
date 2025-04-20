@@ -71,6 +71,9 @@ export default function Index() {
       onChangeText={setPassword}
       />
       <Button title="Sign in" onPress={handleSignIn}/>
+        <Link style={style.link} href={'/'}>
+            <Button title="Back To Home"/>
+        </Link>
     </View>
   );
 }
@@ -95,6 +98,10 @@ const style = StyleSheet.create({
     color: "#fff",
     fontSize: 50,
     marginBottom: 50,
+    alignSelf: 'center',
+  },
+  link: {
+    marginTop: 10,
     alignSelf: 'center',
   }
 })
